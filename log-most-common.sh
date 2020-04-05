@@ -6,7 +6,8 @@ OUTPUT_FILENAME="/opt/pi/temps"
 # CROP_COORDS="75 125 382 170"
 CROP_COORDS="6 135 396 202"
 BATCH_NAME="haze_v5"
-MAX_ACCEPTED_TEMP="40"
+MAX_ACCEPTED_TEMP="30"
+MIN_ACCEPTED_TEMP="15"
 
 while true; do
 	# Take photo using current date	
@@ -67,7 +68,9 @@ while true; do
 		# Convert number to decimal
 		NUM=$(echo "scale = 2; $LVAL / 10" | bc)
 
-		if (( $(echo "$NUM > $MAX_ACCEPTED_TEMP" |bc -l) )); then
+		if (( $(echo "$NUM > $MAX_ACCEPTED_TEMP" | bc -l) )); then
+			echo ${DATE} >> bad
+		elif (( $(echo "$NUM < $MIN_ACCEPTED_TEMP" | bc -l) )); then
 			echo ${DATE} >> bad
 		else
 			echo ${DATE} >> bad
