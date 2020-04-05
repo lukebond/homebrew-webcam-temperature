@@ -6,12 +6,12 @@ OUTPUT_FILENAME="/opt/pi/temps"
 # CROP_COORDS="75 125 382 170"
 CROP_COORDS="56 135 346 202"
 BATCH_NAME="haze_v5"
-while true; do
+MAX_ACCEPTED_TEMP="40"
 
+while true; do
 	# Take photo using current date	
 	DATE=$(date +"%Y-%m-%d-%H%M")
-        fswebcam --fps 15 -S 8 -r 640x480 --no-banner ${FILENAME}
-	# raspistill -vf -hf -o $DATE.jpg
+	fswebcam --fps 15 -S 8 -r 640x480 --no-banner ${FILENAME}
 
 	ARRAY=()
 	X=0
@@ -32,9 +32,9 @@ while true; do
 
 				# Ensure exit code was 0, meaning OCR detected numbers of 3 digits
 				if [ $? -eq 0 ] && [[ ${Z} =~ ^[0-9]+$ ]] && [ ${#Z} -ge 2 ] && [ ${#Z} -le 3 ]; then
-				
+
 					echo $Z
-				
+
 					# Store number from OCR as integer, convert b to 6 
 					# (as ssocr sometimes thinks 6 is B in hex)
 
@@ -67,7 +67,7 @@ while true; do
 		# Convert number to decimal
 		NUM=$(echo "scale = 2; $LVAL / 10" | bc)
 
-		if [ "${NUM}" -ge "40" ]; then
+		if [ "${NUM}" -ge "${MAX_ACCEPTED_TEMP}" ]; then
 			echo ${DATE} >> bad
 		else
 			echo ${DATE} >> bad
