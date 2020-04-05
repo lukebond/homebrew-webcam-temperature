@@ -67,7 +67,7 @@ while true; do
 		# Convert number to decimal
 		NUM=$(echo "scale = 2; $LVAL / 10" | bc)
 
-		if [ "${NUM}" -ge "${MAX_ACCEPTED_TEMP}" ]; then
+		if (( $(echo "$NUM > $MAX_ACCEPTED_TEMP" |bc -l) )); then
 			echo ${DATE} >> bad
 		else
 			echo ${DATE} >> bad
