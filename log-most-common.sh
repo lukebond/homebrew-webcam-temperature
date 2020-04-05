@@ -1,14 +1,17 @@
 #!/bin/bash
 
-SSOCR="/home/luke/Development/ssocr/ssocr"
+SSOCR=$(which ssocr)
 FILENAME="${DATE}.png"
-OUTPUT_FILENAME="/opt/temps"
+OUTPUT_FILENAME="/opt/pi/temps"
+# CROP_COORDS="75 125 382 170"
+CROP_COORDS="56 135 346 202"
+BATCH_NAME="haze_v5"
 while true; do
 
 	# Take photo using current date	
 	DATE=$(date +"%Y-%m-%d-%H%M")
+        fswebcam --fps 15 -S 8 -r 640x480 --no-banner ${FILENAME}
 	# raspistill -vf -hf -o $DATE.jpg
-	cp /home/luke/Development/go/src/github.com/blackjack/webcam/ssocr-temp/output-golang ${FILENAME}
 
 	ARRAY=()
 	X=0
@@ -22,9 +25,9 @@ while true; do
 			# Shear image by different amounts 
 			for SHEAR in 0 1 4 7 10; do
 
-				Z=$(${SSOCR} -d3 -i$PIX crop 30 95 460 220 shear $SHEAR -t$I -b black -f white ${FILENAME} -o dump.png)
+				Z=$(${SSOCR} -d3 -i$PIX crop ${CROP_COORDS} shear $SHEAR -t$I -b black -f white ${FILENAME} -o dump.png)
 
-        # original script converted b to 6 because i guess it was an issue
+				# original script converted b to 6 because i guess it was an issue
 				# Z=$(echo $Z | sed "s/b/6/g;s/\.//g")
 
 				# Ensure exit code was 0, meaning OCR detected numbers of 3 digits
@@ -64,8 +67,13 @@ while true; do
 		# Convert number to decimal
 		NUM=$(echo "scale = 2; $LVAL / 10" | bc)
 
-		# Write number to CSV
-		echo "temperature,brew=haze_v5 temperature=${NUM}" >> ${OUTPUT_FILENAME}
+		if [ "${NUM}" -ge "40" ]; then
+			echo ${DATE} >> bad
+		else
+			echo ${DATE} >> bad
+			# Write number to CSV
+			echo "temperature,brew=${BATCH_NAME} temperature=${NUM}" >> ${OUTPUT_FILENAME}
+		fi
 		
 		rm ${FILENAME}
 	fi
