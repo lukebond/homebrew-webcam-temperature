@@ -4,7 +4,13 @@ DATE=$(date +"%Y_%m_%d_%I_%M")
 SSOCR=$(which ssocr)
 OUTPUT_FILENAME="/opt/pi/temps"
 # CROP_COORDS="75 125 382 170"
-CROP_COORDS="6 135 396 202"
+TOP="135"
+LEFT="6"
+WIDTH="396"
+RIGHT="$((LEFT+WIDTH))"
+BOTTOM="$((TOP+HEIGHT))"
+CROP_COORDS="${LEFT} ${TOP} ${WIDTH} ${HEIGHT}"
+DRAW_COORDS="${LEFT},${TOP} ${RIGHT},${BOTTOM}"
 BATCH_NAME="bv_1"
 MAX_ACCEPTED_TEMP="29"
 MIN_ACCEPTED_TEMP="16"
@@ -72,17 +78,14 @@ while true; do
 
 		if (( $(echo "$NUM > $MAX_ACCEPTED_TEMP" | bc -l) )); then
 			echo ${DATE} >> bad
-			IMAGEMAGICK_COORDS_STRING=$(echo "${CROP_COORDS}" | sed -r 's/^([0-9]+) ([0-9]+) ([0-9]+) ([0-9]+)$/\1,\2 \3,\4/')
-			convert "${FILENAME}" -fill none -stroke red -draw "rectangle ${IMAGEMAGICK_COORDS_STRING}" "${IMAGE_OUTPUT_DIR}/bad-${FILENAME}"
+			convert "${FILENAME}" -fill none -stroke red -draw "rectangle ${DRAW_COORDS}" "${IMAGE_OUTPUT_DIR}/bad-${FILENAME}"
 		elif (( $(echo "$NUM < $MIN_ACCEPTED_TEMP" | bc -l) )); then
 			echo ${DATE} >> bad
-			IMAGEMAGICK_COORDS_STRING=$(echo "${CROP_COORDS}" | sed -r 's/^([0-9]+) ([0-9]+) ([0-9]+) ([0-9]+)$/\1,\2 \3,\4/')
-			convert "${FILENAME}" -fill none -stroke red -draw "rectangle ${IMAGEMAGICK_COORDS_STRING}" "${IMAGE_OUTPUT_DIR}/bad-${FILENAME}"
+			convert "${FILENAME}" -fill none -stroke red -draw "rectangle ${DRAW_COORDS}" "${IMAGE_OUTPUT_DIR}/bad-${FILENAME}"
 		else
 			# Write number to CSV
 			echo "temperature,brew=${BATCH_NAME} temperature=${NUM}" >> ${OUTPUT_FILENAME}
-			IMAGEMAGICK_COORDS_STRING=$(echo "${CROP_COORDS}" | sed -r 's/^([0-9]+) ([0-9]+) ([0-9]+) ([0-9]+)$/\1,\2 \3,\4/')
-			convert "${FILENAME}" -fill none -stroke green -draw "rectangle ${IMAGEMAGICK_COORDS_STRING}" "${IMAGE_OUTPUT_DIR}/good-${FILENAME}"
+			convert "${FILENAME}" -fill none -stroke green -draw "rectangle ${DRAW_COORDS}" "${IMAGE_OUTPUT_DIR}/good-${FILENAME}"
 		fi
 		
 		rm ${FILENAME}
