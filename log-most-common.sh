@@ -78,14 +78,14 @@ while true; do
 
 		if (( $(echo "$NUM > $MAX_ACCEPTED_TEMP" | bc -l) )); then
 			echo ${DATE} >> bad
-			convert "${FILENAME}" -fill none -stroke red -draw "rectangle ${DRAW_COORDS}" "${IMAGE_OUTPUT_DIR}/bad-${FILENAME}"
+			convert "${FILENAME}" -fill none -stroke red -draw "rectangle ${DRAW_COORDS}" "${IMAGE_OUTPUT_DIR}/last-bad.png"
 		elif (( $(echo "$NUM < $MIN_ACCEPTED_TEMP" | bc -l) )); then
 			echo ${DATE} >> bad
-			convert "${FILENAME}" -fill none -stroke red -draw "rectangle ${DRAW_COORDS}" "${IMAGE_OUTPUT_DIR}/bad-${FILENAME}"
+			convert "${FILENAME}" -fill none -stroke red -draw "rectangle ${DRAW_COORDS}" "${IMAGE_OUTPUT_DIR}/last-bad.png"
 		else
 			# Write number to CSV
 			echo "temperature,brew=${BATCH_NAME} temperature=${NUM}" >> ${OUTPUT_FILENAME}
-			convert "${FILENAME}" -fill none -stroke green -draw "rectangle ${DRAW_COORDS}" "${IMAGE_OUTPUT_DIR}/good-${FILENAME}"
+			convert "${FILENAME}" -fill none -stroke green -draw "rectangle ${DRAW_COORDS}" "${IMAGE_OUTPUT_DIR}/last-good.png"
 		fi
 		
 		rm ${FILENAME}
