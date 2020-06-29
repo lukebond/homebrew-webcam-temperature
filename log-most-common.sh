@@ -70,12 +70,17 @@ while true; do
 
 		if (( $(echo "$NUM > $MAX_ACCEPTED_TEMP" | bc -l) )); then
 			echo ${DATE} >> bad
+			IMAGEMAGICK_COORDS_STRING=$(echo "${CROP_COORDS}" | sed -r 's/^([0-9]+) ([0-9]+) ([0-9]+) ([0-9]+)$/\1,\2 \3,\4/')
+			convert "${FILENAME}" -fill none -stroke red -draw "rectangle ${IMAGEMAGICK_COORDS_STRING}" "bad-${FILENAME}"
 		elif (( $(echo "$NUM < $MIN_ACCEPTED_TEMP" | bc -l) )); then
 			echo ${DATE} >> bad
+			IMAGEMAGICK_COORDS_STRING=$(echo "${CROP_COORDS}" | sed -r 's/^([0-9]+) ([0-9]+) ([0-9]+) ([0-9]+)$/\1,\2 \3,\4/')
+			convert "${FILENAME}" -fill none -stroke red -draw "rectangle ${IMAGEMAGICK_COORDS_STRING}" "bad-${FILENAME}"
 		else
-			echo ${DATE} >> bad
 			# Write number to CSV
 			echo "temperature,brew=${BATCH_NAME} temperature=${NUM}" >> ${OUTPUT_FILENAME}
+			IMAGEMAGICK_COORDS_STRING=$(echo "${CROP_COORDS}" | sed -r 's/^([0-9]+) ([0-9]+) ([0-9]+) ([0-9]+)$/\1,\2 \3,\4/')
+			convert "${FILENAME}" -fill none -stroke green -draw "rectangle ${IMAGEMAGICK_COORDS_STRING}" "good-${FILENAME}"
 		fi
 		
 		rm ${FILENAME}
