@@ -1,1 +1,11 @@
-#
+[Unit]
+Description=Synchronise FV monitoring code
+Wants=fv-repo-sync.timer
+
+[Service]
+User=pi
+ExecStart=/home/pi/homebrew-webcam-temperature/sync.sh
+WorkingDirectory=/home/pi/homebrew-webcam-temperature
+
+[Install]
+WantedBy=multi-user.target
