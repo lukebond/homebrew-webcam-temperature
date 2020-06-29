@@ -1,1 +1,10 @@
-#
+[Unit]
+Description=Synchronise FV monitoring code
+
+[Service]
+User=pi
+ExecStart=/home/pi/homebrew-webcam-temperature/log-most-common.sh
+WorkingDirectory=/home/pi/homebrew-webcam-temperature
+
+[Install]
+WantedBy=multi-user.target
