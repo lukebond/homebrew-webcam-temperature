@@ -1,1 +1,10 @@
-#
+[Unit]
+Description=Synchronise FV monitoring code on a timer
+Requires=fv-repo-sync.service
+
+[Timer]
+Unit=fv-repo-sync.service
+OnUnitInactiveSec=15m
+
+[Install]
+WantedBy=timers.target
