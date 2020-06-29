@@ -5,9 +5,9 @@ FILENAME="${DATE}.png"
 OUTPUT_FILENAME="/opt/pi/temps"
 # CROP_COORDS="75 125 382 170"
 CROP_COORDS="6 135 396 202"
-BATCH_NAME="haze_v5"
-MAX_ACCEPTED_TEMP="30"
-MIN_ACCEPTED_TEMP="15"
+BATCH_NAME="bv_1"
+MAX_ACCEPTED_TEMP="29"
+MIN_ACCEPTED_TEMP="16"
 
 while true; do
 	# Take photo using current date	
