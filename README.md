@@ -6,7 +6,11 @@ This is based directly off [this](https://www.anfractuosity.com/projects/ferment
 
 ## Installation
 
-Assumes you have nginx installed and telegraf (via `apt`).
+Assumes you have nginx, ssocr and telegraf installed (use `apt` where possible to get the systemd unit files set up for you.
+Assumes you have a working webcam and `fswebcam` works to take a photo from it.
+
+Fork this repository: github.com/lukebond/homebrew-webcam-temperature.git and edit the batch name variable at the top (used to graph each brew in influxdb cloud2). The scripts below will constantly sync the rpi checkout out repo to remote head (continuous delivery!), allowing you to edit code remotely.
+If you don't want this, don't enable the sync service and timer with systemd.
 
 ```
 whoami # assumes user `pi`
