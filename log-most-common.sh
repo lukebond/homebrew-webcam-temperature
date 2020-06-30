@@ -15,6 +15,7 @@ BATCH_NAME="bv_1"
 MAX_ACCEPTED_TEMP="29"
 MIN_ACCEPTED_TEMP="16"
 
+set -x
 while true; do
 	# Take photo using current date	
 	DATE=$(date +"%Y-%m-%d-%H%M")
