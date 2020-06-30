@@ -6,7 +6,7 @@ This is based directly off [this](https://www.anfractuosity.com/projects/ferment
 
 ## Installation
 
-Assumes you have nginx installed and telegraf (via `apt`). The following tells y
+Assumes you have nginx installed and telegraf (via `apt`).
 
 ```
 whoami # assumes user `pi`
