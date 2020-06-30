@@ -7,6 +7,7 @@ OUTPUT_FILENAME="/opt/pi/temps"
 TOP="135"
 LEFT="6"
 WIDTH="396"
+HEIGHT="202"
 RIGHT="$((LEFT+WIDTH))"
 BOTTOM="$((TOP+HEIGHT))"
 CROP_COORDS="${LEFT} ${TOP} ${WIDTH} ${HEIGHT}"
@@ -35,8 +36,7 @@ while true; do
 			# Shear image by different amounts 
 			#for SHEAR in 0 1 4 7 10; do
 
-				#Z=$(${SSOCR} -d3 -i$PIX crop ${CROP_COORDS} shear $SHEAR -t$I -b black -f white ${FILENAME} -o dump.png)
-				Z=$(${SSOCR} -d3 -i$PIX crop ${CROP_COORDS} -t$I -b black -f white ${FILENAME} -o dump.png)
+				Z=$(${SSOCR} -d3 -i$PIX crop ${CROP_COORDS} shear $SHEAR -t$I -b black -f white ${FILENAME} -o dump.png)
 
 				# original script converted b to 6 because i guess it was an issue
 				# Z=$(echo $Z | sed "s/b/6/g;s/\.//g")
