@@ -34,7 +34,7 @@ while true; do
 		for PIX in 50 20 5; do
 			
 			# Shear image by different amounts 
-			#for SHEAR in 0 1 4 7 10; do
+			for SHEAR in 0 1 4 7 10; do
 
 				Z=$(${SSOCR} -d3 -i$PIX crop ${CROP_COORDS} shear $SHEAR -t$I -b black -f white ${FILENAME} -o dump.png)
 
@@ -54,7 +54,7 @@ while true; do
 					((ARRAY[$NUMI]++))
 					X=1
 				fi
-			#done
+			done
 		done 
 	done
 
